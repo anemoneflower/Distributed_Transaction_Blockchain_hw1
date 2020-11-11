@@ -1,6 +1,7 @@
 package history
 
 import (
+	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -31,13 +32,16 @@ func (h *History) Append(tx string) error {
 
 func (h *History) Init() error {
 	var err error
+	fmt.Println("init history!!")
 
 	files, err := ioutil.ReadDir(".")
 	if err != nil {
+		fmt.Print(err)
 		return err
 	}
 
 	maxID := 1
+	fmt.Printf("initcurrentblockidmax: %d\n", h.currentBlockId)
 	for _, file := range files {
 		s := file.Name()
 		if strings.HasPrefix(s, "history.block.") {
@@ -52,6 +56,7 @@ func (h *History) Init() error {
 	}
 
 	h.currentBlockId = maxID
+	fmt.Printf("initcurrentblockid: %d\n", h.currentBlockId)
 
 	return err
 }
@@ -65,6 +70,7 @@ func (h *History) Write() error {
 
 	var err error
 
+	fmt.Printf("currentblockid: %d\n", h.currentBlockId)
 	// TODO: Write the hash value of previous block
 	blockPath := "history.block." + strconv.Itoa(h.currentBlockId)
 	hashValue, err := hash.Hash(h.currentBlockId - 1)

@@ -56,21 +56,18 @@ func Init(obj *Database) {
 	// TODO: Load state DB
 	statePath := "state.db"
 	data, err := ioutil.ReadFile(statePath)
-	if err != nil {
-		// fmt.Println("kviniterr1")
-		// fmt.Print(err)
-		return
-	}
-	datas := strings.Split(string(data), "\n")
-	for _, s := range datas {
-		if s == "" {
-			// fmt.Println("s is empty")
-			continue
-		}
-		ss := strings.Split(s, "\t")
-		obj.state[ss[0]] = ss[1]
-	}
+	if err == nil {
 
+		datas := strings.Split(string(data), "\n")
+		for _, s := range datas {
+			if s == "" {
+				// fmt.Println("s is empty")
+				continue
+			}
+			ss := strings.Split(s, "\t")
+			obj.state[ss[0]] = ss[1]
+		}
+	}
 	// TODO: Initialize history of transactions
 	err = obj.tempBlock.Init()
 	if err != nil {

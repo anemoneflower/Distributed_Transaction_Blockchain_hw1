@@ -37,12 +37,7 @@ func (db Database) GetState(key string) (string, error) {
 func (db *Database) PutState(key, value string) error {
 	var err error
 	// TODO: Put a key-value pair into state DB and return error if it has
-	_, ok := db.state[key]
-	if ok {
-		// question: error generate?
-	} else {
-		db.state[key] = value
-	}
+	db.state[key] = value
 
 	// TODO: Append history into temp block
 	err = db.tempBlock.Append(key + "\t" + value)
@@ -57,11 +52,9 @@ func Init(obj *Database) {
 	statePath := "state.db"
 	data, err := ioutil.ReadFile(statePath)
 	if err == nil {
-
 		datas := strings.Split(string(data), "\n")
 		for _, s := range datas {
 			if s == "" {
-				// fmt.Println("s is empty")
 				continue
 			}
 			ss := strings.Split(s, "\t")
@@ -71,7 +64,6 @@ func Init(obj *Database) {
 	// TODO: Initialize history of transactions
 	err = obj.tempBlock.Init()
 	if err != nil {
-		fmt.Println("kviniterr")
 		fmt.Print(err)
 	}
 }
@@ -86,13 +78,11 @@ func Finalize(obj *Database) {
 	}
 	err := ioutil.WriteFile(statePath, []byte(s), 0644)
 	if err != nil {
-		fmt.Println("kvfinalizeerr1")
 		fmt.Print(err)
 	}
 	// TODO: Store tempBlock
 	err = obj.tempBlock.Write()
 	if err != nil {
-		fmt.Println("kvfinalizeerr2")
 		fmt.Print(err)
 	}
 }

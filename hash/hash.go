@@ -3,8 +3,6 @@ package hash
 import (
 	"crypto/sha256"
 	"encoding/hex"
-
-	// "fmt"
 	"io"
 	"os"
 	"strconv"
@@ -26,6 +24,5 @@ func Hash(blockID int) (string, error) {
 		return ret, err
 	}
 	ret = hex.EncodeToString(h.Sum(nil))
-	// fmt.Printf("%x", h.Sum(nil))
 	return ret, err
 }
